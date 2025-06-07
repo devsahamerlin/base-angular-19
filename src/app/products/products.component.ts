@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ProductsService } from '../services/products.service';
 
 @Component({
   selector: 'app-products',
@@ -10,20 +11,22 @@ import { Component, OnInit } from '@angular/core';
 export class ProductsComponent implements OnInit {
 
   products! : Array<any>
-  constructor() { }
+  constructor(private productsService: ProductsService) { }
 
   ngOnInit(): void {
-    this.products = [
-      { id: 1, name: 'Computer', price: 2300, selected: true },
-      { id: 2, name: 'Printer', price: 1200, selected: false  },
-      { id: 3, name: 'Smart Phone', price: 1100, selected: false  }
-    ]
+    this.getAllProducts();
   }
 
-  handleDelete(product: any) {
+  getAllProducts() : void {
+    this.products = this.productsService.getAllProducts();
+  }
+
+
+  handleDelete(product: any): void {
     let validate = confirm(`Are you sure you want to delete ${product.name}?`);
     if (validate == true) {
-      this.products = this.products.filter((p:any) => p.id != product.id);
+      this.productsService.deleteProduct(product);
+      this.getAllProducts();
     }
   }
 }
