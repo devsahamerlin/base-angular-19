@@ -1,5 +1,7 @@
 # BaseAngular19
 
+![run.gif](images/run.gif)
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.7.
 
 ## Development server

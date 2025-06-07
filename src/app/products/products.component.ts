@@ -10,7 +10,7 @@ import { ProductsService } from '../services/products.service';
 })
 export class ProductsComponent implements OnInit {
 
-  products! : Array<any>
+  products: any
   constructor(private productsService: ProductsService) { }
 
   ngOnInit(): void {
@@ -18,15 +18,29 @@ export class ProductsComponent implements OnInit {
   }
 
   getAllProducts() : void {
-    this.products = this.productsService.getAllProducts();
+    this.productsService.getAllProducts().subscribe({
+      next: resp => {
+        this.products = resp;
+      }
+      , error: err => {
+        console.error('Error fetching products:', err);
+      }
+    });
   }
 
 
   handleDelete(product: any): void {
     let validate = confirm(`Are you sure you want to delete ${product.name}?`);
     if (validate == true) {
-      this.productsService.deleteProduct(product);
-      this.getAllProducts();
+      this.productsService.deleteProduct(product).subscribe({
+        next: () => {
+          console.log('Product deleted successfully');
+          this.getAllProducts();
+        }
+        , error: (error: any) => {
+          console.error('Error deleting product:', error);
+        }
+      });
     }
   }
 }
